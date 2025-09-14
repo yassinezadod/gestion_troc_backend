@@ -1,6 +1,5 @@
 package com.troc.controller;
 
-
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +15,7 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
+
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -27,18 +27,28 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(Map.of("id", created.getId(), "email", created.getEmail()));
     }
-    
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
 
-        String token = authService.authenticateAndGetToken(email, password);
-        if (token != null) {
-            return ResponseEntity.ok(Map.of("token", token, "expires_in", 3600));
+        Map<String, String> tokens = authService.authenticate(email, password);
+        if (tokens != null) {
+            return ResponseEntity.ok(tokens); // retourne accessToken + refreshToken
         } else {
             return ResponseEntity.status(401).body(Map.of("message", "Email ou mot de passe invalide"));
         }
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        try {
+            String newAccessToken = authService.refreshAccessToken(refreshToken);
+            return ResponseEntity.ok(Map.of("accessToken", newAccessToken, "expires_in", 3600));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(401).body(Map.of("message", "Refresh token invalide ou expiré"));
+        }
+    }
 }

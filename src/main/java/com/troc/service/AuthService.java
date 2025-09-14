@@ -7,6 +7,8 @@ import com.troc.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -38,20 +40,38 @@ public class AuthService {
     }
 
     /**
-     * Authentification et génération d'un token JWT
+     * Authentification et génération des tokens (access + refresh)
      * @param email Email de l'utilisateur
      * @param password Mot de passe en clair
-     * @return JWT si identifiants corrects, sinon null
+     * @return Map contenant accessToken et refreshToken
      */
-    public String authenticateAndGetToken(String email, String password) {
+    public Map<String, String> authenticate(String email, String password) {
         Optional<User> userOpt = userRepository.findByEmail(email.toLowerCase().trim());
+
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (passwordEncoder.matches(password, user.getPassword())) {
-                // Génère un JWT avec expiration 1h
-                return jwtUtil.generateToken(user.getEmail());
+                // Génération des deux tokens
+                String accessToken = jwtUtil.generateAccessToken(user.getEmail());
+                String refreshToken = jwtUtil.generateRefreshToken(user.getEmail());
+
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("accessToken", accessToken);
+                tokens.put("refreshToken", refreshToken);
+                return tokens;
             }
         }
         return null; // si email ou mot de passe invalide
+    }
+
+    /**
+     * Rafraîchir un accessToken à partir d’un refreshToken
+     */
+    public String refreshAccessToken(String refreshToken) {
+        if (jwtUtil.validateToken(refreshToken)) {
+            String email = jwtUtil.getEmailFromToken(refreshToken);
+            return jwtUtil.generateAccessToken(email);
+        }
+        throw new IllegalArgumentException("Refresh token invalide ou expiré");
     }
 }
