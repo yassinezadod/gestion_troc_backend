@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
@@ -138,6 +139,53 @@ public class UserController {
 
         return ResponseEntity.ok("Compte utilisateur supprimé avec succès");
     }
+    
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getPublicUser(@PathVariable UUID id) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    UserResponse response = new UserResponse(
+                            user.getId(),
+                            user.getEmail(),        // ⚠️ si tu veux masquer l’email public, enlève-le ici
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getPhoneCode(),
+                            user.getPhoneNumber(),
+                            user.getCity(),
+                            user.getAddress(),
+                            user.getProfilePicture(),
+                            user.getCreatedAt(),
+                            user.getUpdatedAt()
+                    );
+                    return ResponseEntity.ok(response);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
+    
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers() {
+        var users = userRepository.findAll().stream()
+            .map(user -> new UserResponse(
+                    user.getId(),
+                    user.getEmail(), // ⚠️ tu peux choisir de masquer l’email pour le public
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getPhoneCode(),
+                    user.getPhoneNumber(),
+                    user.getCity(),
+                    user.getAddress(),
+                    user.getProfilePicture(),
+                    user.getCreatedAt(),
+                    user.getUpdatedAt()
+            ))
+            .toList();
+
+        return ResponseEntity.ok(users);
+    }
+
+
 
 
 }
