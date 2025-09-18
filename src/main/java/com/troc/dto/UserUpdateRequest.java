@@ -4,7 +4,7 @@ public class UserUpdateRequest {
     private String firstName;
     private String lastName;
     private String phoneCode;
-    private String phoneNumber;
+    private Long phoneNumber;
     private String city;
     private String address;
     private String profilePicture;
@@ -19,8 +19,8 @@ public class UserUpdateRequest {
     public String getPhoneCode() { return phoneCode; }
     public void setPhoneCode(String phoneCode) { this.phoneCode = phoneCode; }
 
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public Long getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(Long phoneNumber) { this.phoneNumber = phoneNumber; }
 
     public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }

@@ -82,7 +82,7 @@ public class UserController {
         if (updateRequest.getFirstName() != null) user.setFirstName(updateRequest.getFirstName());
         if (updateRequest.getLastName() != null) user.setLastName(updateRequest.getLastName());
         if (updateRequest.getPhoneCode() != null) user.setPhoneCode(updateRequest.getPhoneCode());
-        if (updateRequest.getPhoneNumber() != null) user.setPhoneCode(updateRequest.getPhoneNumber());
+        if (updateRequest.getPhoneNumber() != null) user.setPhoneNumber(updateRequest.getPhoneNumber());
         if (updateRequest.getCity() != null) user.setCity(updateRequest.getCity());
         if (updateRequest.getAddress() != null) user.setAddress(updateRequest.getAddress());
         if (updateRequest.getProfilePicture() != null) user.setProfilePicture(updateRequest.getProfilePicture());
