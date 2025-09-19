@@ -184,6 +184,30 @@ public class UserController {
 
         return ResponseEntity.ok(users);
     }
+    
+    
+    /**
+     * Supprimer un utilisateur par ID (admin)
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable UUID id) {
+        if (!userRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Utilisateur non trouvé");
+        }
+
+        userRepository.deleteById(id);
+        return ResponseEntity.ok("Utilisateur supprimé avec succès");
+    }
+
+    /**
+     * Supprimer tous les utilisateurs (admin)
+     */
+    @DeleteMapping("/all")
+    public ResponseEntity<?> deleteAllUsers() {
+        userRepository.deleteAll();
+        return ResponseEntity.ok("Tous les utilisateurs ont été supprimés avec succès");
+    }
+
 
 
 
