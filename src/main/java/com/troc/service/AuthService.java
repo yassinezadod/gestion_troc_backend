@@ -74,4 +74,13 @@ public class AuthService {
         }
         throw new IllegalArgumentException("Refresh token invalide ou expiré");
     }
+    
+    /**
+     * Trouve un utilisateur par email
+     */
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email.toLowerCase().trim())
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+    }
+
 }
