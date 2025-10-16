@@ -29,6 +29,12 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt = LocalDateTime.now();
+    
+    
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Product> products = new java.util.ArrayList<>();
+
+    // getters & setters
 
 	public UUID getId() {
 		return id;
@@ -126,7 +132,7 @@ public class User {
 		this.updatedAt = updatedAt;
 	}
 
-    // getters & setters
+   
     
     
 }
