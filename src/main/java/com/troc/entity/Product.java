@@ -37,6 +37,11 @@ public class Product {
     @JoinColumn(name = "owner_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User owner;
+    
+    // Relation OneToOne inverse : un produit peut être associé à une seule annonce
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Annonce annonce;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -67,6 +72,9 @@ public class Product {
 
     public User getOwner() { return owner; }
     public void setOwner(User owner) { this.owner = owner; }
+    
+    public Annonce getAnnonce() {return annonce;}
+    public void setAnnonce(Annonce annonce) {this.annonce = annonce; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

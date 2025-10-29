@@ -35,6 +35,8 @@ public class SecurityConfig {
                     "/api/user/**", 
                     "/api/products",  
                     "/api/products/**", 
+                    "/api/annonces",
+                    "/api/annonces/**",
                     "/v3/api-docs/**", 
                     "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
@@ -68,4 +70,8 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
+    
+    
+    
+    
 }

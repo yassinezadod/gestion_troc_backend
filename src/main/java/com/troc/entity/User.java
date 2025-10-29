@@ -2,6 +2,8 @@ package com.troc.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +35,10 @@ public class User {
     
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private java.util.List<Product> products = new java.util.ArrayList<>();
+    
+    // ✅ Un utilisateur peut créer plusieurs annonces
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Annonce> annonces = new ArrayList<>();
 
     // getters & setters
 
@@ -131,6 +137,23 @@ public class User {
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
+	
+	 public List<Product> getProducts() {
+	        return products;
+	    }
+
+	    public void setProducts(List<Product> products) {
+	        this.products = products;
+	    }
+
+	    public List<Annonce> getAnnonces() {
+	        return annonces;
+	    }
+
+	    public void setAnnonces(List<Annonce> annonces) {
+	        this.annonces = annonces;
+	    }
 
    
     
