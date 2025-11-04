@@ -118,7 +118,7 @@ public class AnnonceService {
     }
     
     
-    // ✅ Récupérer toutes les annonces (publiques)
+    //  Récupérer toutes les annonces (publiques)
     public List<Map<String, Object>> getAllAnnonces() {
         List<Annonce> annonces = annonceRepository.findAll();
 

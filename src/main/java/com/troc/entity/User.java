@@ -32,13 +32,18 @@ public class User {
 
     private LocalDateTime updatedAt = LocalDateTime.now();
     
-    
+    // Un utilisateur peut créer plusieurs produit
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private java.util.List<Product> products = new java.util.ArrayList<>();
     
-    // ✅ Un utilisateur peut créer plusieurs annonces
+    // Un utilisateur peut créer plusieurs annonces
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Annonce> annonces = new ArrayList<>();
+    
+    // Un utilisateur recoit plusieur notification
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<Notification> notifications = new java.util.ArrayList<>();
+
 
     // getters & setters
 
@@ -154,6 +159,16 @@ public class User {
 	    public void setAnnonces(List<Annonce> annonces) {
 	        this.annonces = annonces;
 	    }
+	    
+	    
+	    public List<Notification> getNotifications() {
+	        return notifications;
+	    }
+
+	    public void setNotifications(List<Notification> notifications) {
+	        this.notifications = notifications;
+	    }
+
 
    
     
